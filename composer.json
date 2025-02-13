@@ -1,0 +1,46 @@
+{
+    "name": "ydg/tongcheng-sdk",
+    "description": "tongcheng cps sdk",
+    "license": "MIT",
+    "keywords": [
+        "php",
+        "sdk",
+        "tongcheng",
+        "tongcheng-cps-api",
+        "tongcheng-cps-sdk"
+    ],
+    "authors": [
+        {
+            "name": "ydg",
+            "email": "1028180290@qq.com"
+        }
+    ],
+    "require": {
+        "php": "^7.0|^8.0",
+        "ydg/foudation-sdk": "^1.0",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.12",
+        "phpunit/phpunit": "^9.5",
+        "vlucas/phpdotenv": "^5.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Ydg\\TCSdk\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "YdgTest\\TCSdk\\": "tests/"
+        }
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "sort-packages": true
+    },
+    "scripts": {
+        "test": "phpunit",
+        "cs-fix": "php-cs-fixer fix ."
+    }
+}
