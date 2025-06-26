@@ -2,12 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Ydg\TCSdk\ActivityOrder;
+namespace Ydg\TCSdk\ExternalActivityOrder;
 
-use GuzzleHttp\Exception\GuzzleException;
 use Ydg\TCSdk\TCClient;
 
-class ActivityOrder extends TCClient
+class ExternalActivityOrder extends TCClient
 {
     /**
      * 订单查询接口
@@ -23,18 +22,20 @@ class ActivityOrder extends TCClient
      */
     public function list(array $params)
     {
+        $params['appId'] = $params['appId'] ?? $this->offsetGet('app_id');
         return $this->get('/openapi/external/activityOrder/listOrder', $params);
     }
 
     /**
      * 生成跳转链接根据 token 获取外部渠道配置信息
-     * @example params['action_time'] [必填]时间戳(秒级),用以进行参数校验
      * @example params['token'] [必填]分配 token
+     * @example params['action_time'] [必填]时间戳(秒级),用以进行参数校验
      * @example params['code'] [必填]校验关键参数,防止被篡改; code=md5(token+action_time)
      * @example params['outUserId'] [必填]三方用户ID
      */
     public function getChannelConfig(array $params)
     {
+        $params['token'] = $params['token'] ?? $this->offsetGet('token');
         return $this->get('/openapi/external/activityOrder/getChannelConfig', $params);
     }
 }

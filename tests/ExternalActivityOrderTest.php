@@ -1,11 +1,10 @@
 <?php
 
-class ActivityOrderTest extends AbstractTest
+class ExternalActivityOrderTest extends AbstractTest
 {
     public function test_list()
     {
-        $response = $this->getApp()->activityOrder->list([
-            'appId' => getenv('APP_ID'),
+        $response = $this->getApp()->externalActivityOrder->list([
             'begin_date' => date('Y-m-d H:i:s', time() - 3600),
             'end_date' => date('Y-m-d H:i:s'),
             'update' => 1,
@@ -20,7 +19,7 @@ class ActivityOrderTest extends AbstractTest
         $token = getenv('TOKEN');
         $actionTime = time();
         $code = md5($token . $actionTime);
-        $response = $this->getApp()->activityOrder->getChannelConfig([
+        $response = $this->getApp()->externalActivityOrder->getChannelConfig([
             'token' => $token,
             'action_time' => $actionTime,
             'code' => $code,

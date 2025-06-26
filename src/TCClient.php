@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Ydg\TCSdk;
 
-use GuzzleHttp\Exception\GuzzleException;
 use Ydg\FoudationSdk\FoundationApi;
 use Ydg\FoudationSdk\Traits\HasAttributes;
 use Ydg\TCSdk\Support\Utils;
@@ -22,24 +21,49 @@ class TCClient extends FoundationApi
         'verify' => false,
     ];
 
-    /**
-     * @param string $method
-     * @param array $data
-     * @return array|null
-     * @throws GuzzleException
-     */
-    public function get(string $method, array $data)
+    public function get(string $method, array $data, bool $make_sign = false)
     {
-        $data['trackid'] = $data['trackid'] ?? Utils::genUUID();
-
-        $response = $this->getHttpClient()->get($this->getUri($method), $data, [
-            'headers' => [
-                'Content-Type' => 'application/json',
-                'Accept' => 'application/json',
-            ],
-        ]);
+        $response = $this->getHttpClient()->get(
+            $this->getUri($method),
+            $this->formatData($data, $make_sign),
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
+            ]
+        );
 
         return Utils::jsonResponseToArray($response);
+    }
+
+    public function post(string $method, array $data, bool $make_sign = false)
+    {
+        $response = $this->getHttpClient()->json(
+            $this->getUri($method),
+            $this->formatData($data, $make_sign),
+            [
+                'headers' => [
+                    'Content-Type' => 'application/json',
+                    'Accept' => 'application/json',
+                ],
+            ]
+        );
+
+        return Utils::jsonResponseToArray($response);
+    }
+
+    protected function formatData(array $data, bool $make_sign = false): array
+    {
+        if ($make_sign) {
+            $data['traceId'] = $data['traceId'] ?? Utils::genUUID();
+            $data['timestamp'] = Utils::getMillisecond();
+            $data['sign'] = Utils::generateSign($this->offsetGet('app_secret'), $data);
+        } else {
+            $data['trackid'] = $data['trackid'] ?? Utils::genUUID();
+        }
+
+        return $data;
     }
 
     public function getUri(string $method): string

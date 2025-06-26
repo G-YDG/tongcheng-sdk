@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Ydg\TCSdk\ActivityOrder;
+namespace Ydg\TCSdk\Hotel;
 
 use Pimple\Container;
 use Pimple\ServiceProviderInterface;
@@ -17,8 +17,8 @@ class ServiceProvider implements ServiceProviderInterface
      */
     public function register(Container $pimple)
     {
-        $pimple['activityOrder'] = function ($pimple) {
-            return new ActivityOrder(isset($pimple['config']) ? $pimple['config']->toArray() : []);
+        $pimple['hotel'] = function ($pimple) {
+            return new Hotel(isset($pimple['config']) ? $pimple['config']->toArray() : []);
         };
     }
 }
